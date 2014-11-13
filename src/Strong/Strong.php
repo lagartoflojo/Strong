@@ -21,7 +21,6 @@ class Strong
      */
     protected $config = array(
         'name' => 'default',
-        'provider' => 'PDO',
     );
 
     /**
@@ -71,23 +70,9 @@ class Strong
     {
         // Save the config in gloabal variable
         $this->setConfig($config);
-
-        // Set the provider class name
-        $provider = '\\Strong\\Provider\\' . $this->config['provider'];
-
-        if ( !class_exists($provider)) {
-            throw new \Exception('Strong is missing provider ' . $this->config['provider'] . ' in ' . get_class($this));
-        }
-
-        // Load the provider
-        $provider = new $provider($this->config);
-
-        if ( !($provider instanceof \Strong\Provider)) {
-            throw new \Exception('The current Provider ' . $this->config['provider'] . ' does not extend \Strong\Provider');
-        }
-
+        
         // Load the provider for access
-        $this->provider = $provider;
+        $this->provider = $this->config['provider'];
 
         //Set app name
         if ( !isset(self::$apps[$this->config['name']]) ) {
